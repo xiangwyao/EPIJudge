@@ -1,10 +1,15 @@
+from test_framework import generic_test, test_utils
+
+
 def combinations(n, k):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return []
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main(
-        'combinations.tsv', combinations, comp=test_utils.unordered_compare)
+    exit(
+        generic_test.generic_test_main(
+            "combinations.py",
+            'combinations.tsv',
+            combinations,
+            comparator=test_utils.unordered_compare))

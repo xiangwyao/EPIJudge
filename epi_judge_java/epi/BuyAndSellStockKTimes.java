@@ -1,20 +1,20 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-
+import epi.test_framework.GenericTest;
 import java.util.List;
-
 public class BuyAndSellStockKTimes {
-  @EpiTest(testfile = "buy_and_sell_stock_k_times.tsv")
+  @EpiTest(testDataFile = "buy_and_sell_stock_k_times.tsv")
 
   public static double buyAndSellStockKTimes(List<Double> prices, int k) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return 0.0;
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "BuyAndSellStockKTimes.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

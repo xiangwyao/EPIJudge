@@ -1,18 +1,19 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-
+import epi.test_framework.GenericTest;
 public class SnakeString {
-  @EpiTest(testfile = "snake_string.tsv")
+  @EpiTest(testDataFile = "snake_string.tsv")
 
   public static String snakeString(String s) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return "";
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "SnakeString.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

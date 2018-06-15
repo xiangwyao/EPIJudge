@@ -1,10 +1,12 @@
+from test_framework import generic_test
+
+
 def get_height(cases, drops):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return 0
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('max_safe_height.tsv',
-                                              get_height)
+    exit(
+        generic_test.generic_test_main("max_safe_height.py",
+                                       'max_safe_height.tsv', get_height))

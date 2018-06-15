@@ -1,11 +1,8 @@
 package epi;
-
 import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
-import epi.test_framework.GenericTestHandler;
-
+import epi.test_framework.GenericTest;
 import java.util.List;
-
 public class SearchForMissingElement {
   @EpiUserType(ctorParams = {Integer.class, Integer.class})
 
@@ -48,15 +45,18 @@ public class SearchForMissingElement {
     }
   }
 
-  @EpiTest(testfile = "find_missing_and_duplicate.tsv")
+  @EpiTest(testDataFile = "find_missing_and_duplicate.tsv")
 
   public static DuplicateAndMissing findDuplicateMissing(List<Integer> A) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return new DuplicateAndMissing(0, 0);
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "SearchForMissingElement.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

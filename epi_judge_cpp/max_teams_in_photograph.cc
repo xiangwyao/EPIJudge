@@ -1,9 +1,8 @@
 #include <stdexcept>
 #include <vector>
-
-#include "test_framework/test_timer.h"
-#include "test_framework/test_utils_serialization_traits.h"
-
+#include "test_framework/generic_test.h"
+#include "test_framework/serialization_traits.h"
+#include "test_framework/timed_executor.h"
 using std::vector;
 
 struct GraphVertex {
@@ -13,10 +12,9 @@ struct GraphVertex {
 };
 
 int FindLargestNumberTeams(vector<GraphVertex>* graph) {
-  // Implement this placeholder.
+  // TODO - you fill in here.
   return 0;
 }
-
 struct Edge {
   int from;
   int to;
@@ -25,7 +23,7 @@ struct Edge {
 template <>
 struct SerializationTraits<Edge> : UserSerTraits<Edge, int, int> {};
 
-int FindLargestNumberTeamsWrapper(TestTimer& timer, int k,
+int FindLargestNumberTeamsWrapper(TimedExecutor& executor, int k,
                                   const vector<Edge>& edges) {
   if (k <= 0) {
     throw std::runtime_error("Invalid k value");
@@ -40,17 +38,13 @@ int FindLargestNumberTeamsWrapper(TestTimer& timer, int k,
     graph[e.from].edges.push_back(&graph[e.to]);
   }
 
-  timer.Start();
-  int result = FindLargestNumberTeams(&graph);
-  timer.Stop();
-  return result;
+  return executor.Run([&] { return FindLargestNumberTeams(&graph); });
 }
 
-#include "test_framework/test_utils_generic_main.h"
-
 int main(int argc, char* argv[]) {
-  std::vector<std::string> param_names{"timer", "k", "edges"};
-  generic_test_main(argc, argv, param_names, "max_teams_in_photograph.tsv",
-                    &FindLargestNumberTeamsWrapper);
-  return 0;
+  std::vector<std::string> args{argv + 1, argv + argc};
+  std::vector<std::string> param_names{"executor", "k", "edges"};
+  return GenericTestMain(
+      args, "max_teams_in_photograph.cc", "max_teams_in_photograph.tsv",
+      &FindLargestNumberTeamsWrapper, DefaultComparator{}, param_names);
 }

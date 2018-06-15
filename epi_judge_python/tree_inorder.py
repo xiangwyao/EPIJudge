@@ -1,13 +1,12 @@
-from binary_tree_node import BinaryTreeNode
+from test_framework import generic_test
 
 
 def inorder_traversal(tree):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return []
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('tree_inorder.tsv',
-                                              inorder_traversal)
+    exit(
+        generic_test.generic_test_main("tree_inorder.py", 'tree_inorder.tsv',
+                                       inorder_traversal))

@@ -1,13 +1,10 @@
 package epi;
-
 import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
-import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestTimer;
-
+import epi.test_framework.GenericTest;
+import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
 import java.util.List;
-
 public class MaxTeamsInPhotograph {
 
   public static class GraphVertex {
@@ -17,10 +14,9 @@ public class MaxTeamsInPhotograph {
   }
 
   public static int findLargestNumberTeams(List<GraphVertex> graph) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return 0;
   }
-
   @EpiUserType(ctorParams = {int.class, int.class})
   public static class Edge {
     public int from;
@@ -32,9 +28,10 @@ public class MaxTeamsInPhotograph {
     }
   }
 
-  @EpiTest(testfile = "max_teams_in_photograph.tsv")
-  public static int findLargestNumberTeamsWrapper(TestTimer timer, int k,
-                                                  List<Edge> edges) {
+  @EpiTest(testDataFile = "max_teams_in_photograph.tsv")
+  public static int findLargestNumberTeamsWrapper(TimedExecutor executor, int k,
+                                                  List<Edge> edges)
+      throws Exception {
     if (k <= 0) {
       throw new RuntimeException("Invalid k value");
     }
@@ -49,14 +46,14 @@ public class MaxTeamsInPhotograph {
       graph.get(e.from).edges.add(graph.get(e.to));
     }
 
-    timer.start();
-    int result = findLargestNumberTeams(graph);
-    timer.stop();
-    return result;
+    return executor.run(() -> findLargestNumberTeams(graph));
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "MaxTeamsInPhotograph.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

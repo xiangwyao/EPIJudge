@@ -1,20 +1,20 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-
+import epi.test_framework.GenericTest;
 import java.util.List;
-
 public class InsertOperatorsInString {
-  @EpiTest(testfile = "insert_operators_in_string.tsv")
+  @EpiTest(testDataFile = "insert_operators_in_string.tsv")
 
   public static boolean expressionSynthesis(List<Integer> digits, int target) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return true;
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "InsertOperatorsInString.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

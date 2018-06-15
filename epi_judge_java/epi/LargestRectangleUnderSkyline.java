@@ -1,20 +1,20 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-
+import epi.test_framework.GenericTest;
 import java.util.List;
-
 public class LargestRectangleUnderSkyline {
-  @EpiTest(testfile = "largest_rectangle_under_skyline.tsv")
+  @EpiTest(testDataFile = "largest_rectangle_under_skyline.tsv")
 
   public static int calculateLargestRectangle(List<Integer> heights) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return 0;
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "LargestRectangleUnderSkyline.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

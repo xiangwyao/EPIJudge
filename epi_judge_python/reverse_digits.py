@@ -1,9 +1,12 @@
+from test_framework import generic_test
+
+
 def reverse(x):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return 0
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('reverse_digits.tsv', reverse)
+    exit(
+        generic_test.generic_test_main("reverse_digits.py",
+                                       'reverse_digits.tsv', reverse))

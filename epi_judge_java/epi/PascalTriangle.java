@@ -1,20 +1,20 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-
+import epi.test_framework.GenericTest;
 import java.util.List;
-
 public class PascalTriangle {
-  @EpiTest(testfile = "pascal_triangle.tsv")
+  @EpiTest(testDataFile = "pascal_triangle.tsv")
 
   public static List<List<Integer>> generatePascalTriangle(int numRows) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return null;
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "PascalTriangle.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

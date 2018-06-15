@@ -1,13 +1,13 @@
-from list_node import ListNode
+from test_framework import generic_test
 
 
 def even_odd_merge(L):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return None
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('even_odd_list_merge.tsv',
-                                              even_odd_merge)
+    exit(
+        generic_test.generic_test_main("even_odd_list_merge.py",
+                                       'even_odd_list_merge.tsv',
+                                       even_odd_merge))

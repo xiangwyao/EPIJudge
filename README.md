@@ -1,10 +1,6 @@
 # EPI Judge
 
-## Intro
-
-The EPI Judge is ready! This screenshot should give you a good idea of what it's about.
-
-<img src="http://elementsofprogramminginterviews.com/img/judge-ide-example.png" width="600px"></img>
+## Introduction
 
 EPI Judge consists of the following:
 
@@ -14,9 +10,123 @@ EPI Judge consists of the following:
 
 ## Installation
 
-The installation is super-simple &mdash; there's no install! You just **download the project, point your IDE/editor to it**, and start the code-debug cycle, with instant feedback! You can download the judge as a git project via `git clone`, or just get the source as a [zip](https://github.com/adnanaziz/EPIJudge/archive/master.zip).
+Here's how to download the judge:
 
-### C++ project import
+    $ git clone https://github.com/adnanaziz/EPIJudge.git
+If you do not have `git`, here's a good [tutorial](https://www.atlassian.com/git/tutorials/install-git) on installing git itself.
+
+## Running the judge using IDEs
+
+Check out these one minute videos to see how easy it is to get started with the judge.
+
+### Python
+
+[PyCharm](https://youtu.be/ImD_iI-uGYo), [Eclipse](https://youtu.be/rZ1qqwEXwQY), [NetBeans](https://youtu.be/Z41jW1TyZwY)
+
+### Java
+
+[IntelliJ IDEA](https://youtu.be/1BzHUpluQHM), [Eclipse](https://youtu.be/i9uz9Zazo0A)
+
+### C++
+
+[CLion](https://youtu.be/aHPDApyyYEg), [Visual Studio 2017](https://youtu.be/hgd8IIQpBEE)
+
+
+## Running the judge from the command line
+
+### Python
+
+    $ python3 <program_name>.py
+
+#### Java
+
+Use the [`Makefile`](https://github.com/adnanaziz/EPIJudge/blob/master/epi_judge_java/Makefile). 
+
+Compile and run a specific program:
+
+    $ make <program_name> 
+Example:
+
+    $ make Anagrams
+Compile and run the last program that you edited:
+
+	$ make
+
+### C++
+
+You can manually compile and run all programs by directly invoking GCC and Clang. 
+
+    $ g++ -pthread -std=c++14 -O3 -o anagrams anagrams.cc
+You can also use the provided Makefile: `make <program_name>`. You can also use CMake with the provided CMakeLists.txt file. 
+
+	$ make 
+The default Makefile target is the last edited file.
+
+    $ make anagrams
+
+
+## FAQ
+
+- How can I contact the authors? 
+
+Please feel free to send us questions and feedback -  `adnan.aziz@gmail.com` and `tsung.hsien.lee@gmail.com`
+
+- Help, my EPIJudge is not working, what should I do?
+
+If you do have issues, e.g., with install or with buggy tests, feel free to reach out to us via email. Please be as detailed as you can: the ideal is if you can upload a screencast video of the issue to youtube; failing that, please upload screenshots.  The more detailed the description of the problem and your environment (OS, language version, IDE and version), the easier it’ll be for us to help you.
+
+- I'm new to programming, and don't have any kind of development environment, what should I do?
+
+The IntelliJ Integrated Development environments described above are best-in-class, and have free versions that will work fine for the EPI Judge. They do not include the compilers. You can get the Java development environment from [Oracle](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), and the Python development environment from [Python.org](https://www.python.org/downloads/). For C++, you have multiple options. The simplest is to install [VisualStudio](https://code.visualstudio.com/download), which includes both the IDE and the compiler. Google is a good resource for installation help.
+
+- What compilers are supported for judge?
+  - C++
+    - Linux
+      - **GCC** 5.4.1
+      - **Clang** 4.0
+    - OS X  
+      - **Apple LLVM Clang** 9.0.0
+    - Windows
+      - **Visual Studio** 2017 15.7.0 Preview 6
+        - Release version of VS2017 contains a bug that makes it impossible to compile judge programs
+      - **MinGW** GCC 5.4.0
+      - **LXSS** (Windows Subsystem for Linux) GCC 5.4.0
+  - Java     
+    - **Java** 9
+  - Python
+    - **Python** 3.6
+   
+
+- What compilers are supported for solutions?
+  - C++
+      - Linux
+        - **GCC** 7.0.0
+        - **Clang** 5.0
+      - OS X  
+        - **Apple LLVM Clang** 9.0.0
+      - Windows
+        - **Visual Studio** 2017 15.7.0 Preview 6
+            - Release version of VS2017 contains a bug that makes it impossible to compile judge programs
+        - **MinGW** GCC 7.2.0
+        - **LXSS** (Windows Subsystem for Linux) GCC 7.2.0
+    - Java     
+      - **Java** 9
+    - Python
+      - **Python** 3.6 
+
+Let us know if you managed to compile with an older version.
+
+- What does the UI look like?
+
+Take a look at this screenshot.
+
+<img src="http://elementsofprogramminginterviews.com/img/judge-ide-example.png" width="600px"></img>
+
+- How can I understand the test framework better?
+
+The judge harness is fairly complex (but does not use nonstandard language features or libraries). You are welcome to study it, but we’d advise you against making changes to it (since it will lead to nasty merge conflicts when you update).
+
+- How do I import the C++ project?
 
 If you want to import the project into your favourite IDE, you probably need to create IDE project with [CMake](https://cmake.org/) (no need to do it for CLion, it supports CMake out-of-the-box).
 
@@ -28,89 +138,6 @@ After installing CMake, open your terminal, go to `epi_judge_cpp` folder and run
     cmake -G "Visual Studio 15 2017" ..
 
 Then just open `epi_judge_cpp/vs/epi_judge_cpp.sln` solution with Visual Studio and it will load all EPI programs.
-
-### Supported compilers
-
-The judge has been tested with these compilers. Let us know if you managed to compile all programs with an older version.
-
-- **GCC** 5.4.1 (on Ubuntu 16.04)
-- **Clang** 4.0 (on Ubuntu 16.04)
-- **Apple LLVM Clang** 9.0.0
-- **Visual Studio** 2017 (may be compatible with 2015, though we didn't check it (yet))
-- **Java** 8
-- **Python** 3.5
-
-### IDE guides
-
-Check out one minute screencapture videos on YouTube to see how easy it is to get started with the judge.
-
-#### C++
-
-- [CLion](https://youtu.be/aHPDApyyYEg)
-- [Visual Studio 2017](https://youtu.be/hgd8IIQpBEE)
-
-#### Java
-
-- [IntelliJ IDEA](https://youtu.be/1BzHUpluQHM)
-- [Eclipse](https://youtu.be/i9uz9Zazo0A)
-
-#### Python
-
-- [PyCharm](https://youtu.be/ImD_iI-uGYo)
-- [Eclipse](https://youtu.be/rZ1qqwEXwQY)
-- [NetBeans](https://youtu.be/Z41jW1TyZwY)
-
-### Running from command-line
-
-#### C++
-
-You can manually compile and run all programs by directly invoking GCC or Clang compiler. Test framework is header-only, so no separate compilation is needed. Don't forget to add `-std=c++14` switch. Also you may need to provide `-pthread` switch (if you see some link errors with std::thread).
-
-Alternatively you can use Makefile in epi_judge_cpp directory (use `make <program_name>` for release build and `make <program_name>_dbg` for debug build) or use CMake with the provided CMakeLists.txt file. Default Makefile target ("last") compiles and runs the last edited file.
-
-Example:
-
-    g++ -pthread -std=c++14 -O3 -o anagrams anagrams.cc
-
-OR
-
-    make anagrams
-
-#### Java
-
-Java compilation process is quite complicated, so we recommend you to use the provided Makefile. Run `make <program_name>` to compile and immediately start the program or run `make` to compile and start the last edited file.
-
-Example:
-
-    make Anagrams
-
-#### Python
-
-    python3 <program_name>.py
-
-That's all.
-
-## Acknowledgments
-
-Please send us questions and feedback by email; we're adnan.aziz@gmail.com and tsung.hsien.lee@gmail.com
-
-A big shout-out to the hundreds of users who tried out the alpha release over the past couple of months. As always, we never fail to be impressed by the enthusiasm and commitment our readers have; it has served to bring out the best in us.
-We all thank [Viacheslav Kroilov](https://github.com/metopa), for applying his exceptional software engineering skills to make EPI Judge a reality.
-
-## FAQ
-
-- Help, my EPIJudge is not working, what should I do?
-
-If you do have issues, e.g., with install or with buggy tests, feel free to reach out to us via email. Please be as detailed as you can: the ideal is if you can upload a screencast video of the issue to youtube; failing that, please upload screenshots.  The more detailed the description of the problem and your environment (OS, language version, IDE and version), the easier it’ll be for us to help you.
-
-- I'm new to programming, and don't have any kind of development environment, what should I do?
-
-The IntelliJ Integrated Development environments described above are best-in-class, and have free versions that will work fine for the EPI Judge. They do not include the compilers. You can get the Java development environment from [Oracle](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), and the Python development environment from [Python.org](https://www.python.org/downloads/). For C++, you have multiple options. The simplest is to install [VisualStudio](https://code.visualstudio.com/download), which includes both the IDE and the compiler. Google is a good resource for installation help.
-
-- How can I understand the test framework better?
-
-The judge harness is fairly complex (but does not use nonstandard language features or libraries). You are welcome to study it, but we’d advise you against making changes to it (since it will lead to nasty merge conflicts when you update).
-
 
 ## Problem to Program Mapping
 
@@ -224,7 +251,7 @@ The judge harness is fairly complex (but does not use nonstandard language featu
 | Bootcamp: Hash Tables | anagrams.cc | Anagrams.java | anagrams.py | 
 | Test for palindromic permutations | is\_string\_permutable\_to\_palindrome.cc | IsStringPermutableToPalindrome.java | is\_string\_permutable\_to\_palindrome.py | 
 | Is an anonymous letter constructible? | is\_anonymous\_letter\_constructible.cc | IsAnonymousLetterConstructible.java | is\_anonymous\_letter\_constructible.py | 
-| Implement an ISBN cache | lru\_cache.cc | LRUCache.java | lru\_cache.py | 
+| Implement an ISBN cache | lru\_cache.cc | LruCache.java | lru\_cache.py | 
 | Compute the LCA, optimizing for close ancestors | lowest\_common\_ancestor\_close\_ancestor.cc | LowestCommonAncestorCloseAncestor.java | lowest\_common\_ancestor\_close\_ancestor.py | 
 | Find the nearest repeated entries in an array | nearest\_repeated\_entries.cc | NearestRepeatedEntries.java | nearest\_repeated\_entries.py | 
 | Find the smallest subarray covering all values | smallest\_subarray\_covering\_set.cc | SmallestSubarrayCoveringSet.java | smallest\_subarray\_covering\_set.py | 
@@ -234,6 +261,8 @@ The judge harness is fairly complex (but does not use nonstandard language featu
 | Compute all string decompositions | string\_decompositions\_into\_dictionary\_words.cc | StringDecompositionsIntoDictionaryWords.java | string\_decompositions\_into\_dictionary\_words.py | 
 | Test the Collatz conjecture | collatz\_checker.cc | CollatzChecker.java | collatz\_checker.py | 
 | Compute the intersection of two sorted arrays | intersect\_sorted\_arrays.cc | IntersectSortedArrays.java | intersect\_sorted\_arrays.py | 
+| Merge two sorted arrays | two\_sorted\_arrays\_merge.cc | TwoSortedArraysMerge.java | two\_sorted\_arrays\_merge.py | 
+| Computing the h-index | h\_index.cc | HIndex.java | h\_index.py | 
 | Remove first-name duplicates | remove\_duplicates.cc | RemoveDuplicates.java | remove\_duplicates.py | 
 | Smallest nonconstructible value | smallest\_nonconstructible\_value.cc | SmallestNonconstructibleValue.java | smallest\_nonconstructible\_value.py | 
 | Render a calendar | calendar\_rendering.cc | CalendarRendering.java | calendar\_rendering.py | 
@@ -249,8 +278,10 @@ The judge harness is fairly complex (but does not use nonstandard language featu
 | Compute the LCA in a BST | lowest\_common\_ancestor\_in\_bst.cc | LowestCommonAncestorInBst.java | lowest\_common\_ancestor\_in\_bst.py | 
 | Reconstruct a BST from traversal data | bst\_from\_preorder.cc | BstFromPreorder.java | bst\_from\_preorder.py | 
 | Find the closest entries in three sorted arrays | minimum\_distance\_3\_sorted\_arrays.cc | MinimumDistance3SortedArrays.java | minimum\_distance\_3\_sorted\_arrays.py | 
+| Enumerate numbers of the form a + b sqrt(2) | a\_b\_sqrt2.cc | ABSqrt2.java | a\_b\_sqrt2.py | 
 | Build a minimum height BST from a sorted array | bst\_from\_sorted\_array.cc | BstFromSortedArray.java | bst\_from\_sorted\_array.py | 
 | Test if three BST nodes are totally ordered | descendant\_and\_ancestor\_in\_bst.cc | DescendantAndAncestorInBst.java | descendant\_and\_ancestor\_in\_bst.py | 
+| The range lookup problem | range\_lookup\_in\_bst.cc | RangeLookupInBst.java | range\_lookup\_in\_bst.py | 
 | Add credits | adding\_credits.cc | AddingCredits.java | adding\_credits.py | 
 | The Towers of Hanoi problem | hanoi.cc | Hanoi.java | hanoi.py | 
 | Generate all nonattacking placements of n-Queens | n\_queens.cc | NQueens.java | n\_queens.py | 
@@ -262,6 +293,8 @@ The judge harness is fairly complex (but does not use nonstandard language featu
 | Generate binary trees | enumerate\_trees.cc | EnumerateTrees.java | enumerate\_trees.py | 
 | Implement a Sudoku solver | sudoku\_solve.cc | SudokuSolve.java | sudoku\_solve.py | 
 | Compute a Gray code | gray\_code.cc | GrayCode.java | gray\_code.py | 
+| Bootcamp: Dynamic Programming | fibonacci.cc | Fibonacci.java | fibonacci.py | 
+| Bootcamp: Dynamic Programming | max\_sum\_subarray.cc | MaxSumSubarray.java | max\_sum\_subarray.py | 
 | Count the number of score combinations | number\_of\_score\_combinations.cc | NumberOfScoreCombinations.java | number\_of\_score\_combinations.py | 
 | Compute the Levenshtein distance | levenshtein\_distance.cc | LevenshteinDistance.java | levenshtein\_distance.py | 
 | Count the number of ways to traverse a 2D array | number\_of\_traversals\_matrix.cc | NumberOfTraversalsMatrix.java | number\_of\_traversals\_matrix.py | 
@@ -281,9 +314,10 @@ The judge harness is fairly complex (but does not use nonstandard language featu
 | The 3-sum problem | three\_sum.cc | ThreeSum.java | three\_sum.py | 
 | Find the majority element | majority\_element.cc | MajorityElement.java | majority\_element.py | 
 | The gasup problem | refueling\_schedule.cc | RefuelingSchedule.java | refueling\_schedule.py | 
+| Compute the maximum water trapped by a pair of vertical lines | max\_trapped\_water.cc | MaxTrappedWater.java | max\_trapped\_water.py | 
 | Compute the largest rectangle under the skyline | largest\_rectangle\_under\_skyline.cc | LargestRectangleUnderSkyline.java | largest\_rectangle\_under\_skyline.py | 
 | Search a maze | search\_maze.cc | SearchMaze.java | search\_maze.py | 
-| Paint a Boolean Matrix | matrix_connected_regions.cc | MatrixConnectedRegions.java | matrix_connected_regions.py | 
+| Paint a Boolean matrix | matrix\_connected\_regions.cc | MatrixConnectedRegions.java | matrix\_connected\_regions.py | 
 | Compute enclosed regions | matrix\_enclosed\_regions.cc | MatrixEnclosedRegions.java | matrix\_enclosed\_regions.py | 
 | Deadlock detection | deadlock\_detection.cc | DeadlockDetection.java | deadlock\_detection.py | 
 | Clone a graph | graph\_clone.cc | GraphClone.java | graph\_clone.py | 
@@ -306,8 +340,9 @@ The judge harness is fairly complex (but does not use nonstandard language featu
 | Compute fair bonuses | bonus.cc | Bonus.java | bonus.py | 
 | Search a sorted array of unknown length | search\_unknown\_length\_array.cc | SearchUnknownLengthArray.java | search\_unknown\_length\_array.py | 
 | Search in two sorted arrays | kth\_largest\_element\_in\_two\_sorted\_arrays.cc | KthLargestElementInTwoSortedArrays.java | kth\_largest\_element\_in\_two\_sorted\_arrays.py | 
+| Find the kth largest element - large n, small k | kth\_largest\_element\_in\_long\_array.cc | KthLargestElementInLongArray.java | kth\_largest\_element\_in\_long\_array.py | 
 | Find an element that appears only once | element\_appearing\_once.cc | ElementAppearingOnce.java | element\_appearing\_once.py | 
-| Find the line through the most points | line\_though\_most\_points.cc | LineThoughMostPoints.java | line\_though\_most\_points.py | 
+| Find the line through the most points | line\_through\_most\_points.cc | LineThroughMostPoints.java | line\_through\_most\_points.py | 
 | Convert a sorted doubly linked list into a BST | sorted\_list\_to\_bst.cc | SortedListToBst.java | sorted\_list\_to\_bst.py | 
 | Convert a BST to a sorted doubly linked list | bst\_to\_sorted\_list.cc | BstToSortedList.java | bst\_to\_sorted\_list.py | 
 | Merge two BSTs | bst\_merge.cc | BstMerge.java | bst\_merge.py | 
@@ -326,3 +361,8 @@ The judge harness is fairly complex (but does not use nonstandard language featu
 | Find the longest subarray whose sum <=  k | longest\_subarray\_with\_sum\_constraint.cc | LongestSubarrayWithSumConstraint.java | longest\_subarray\_with\_sum\_constraint.py | 
 | Road network | road\_network.cc | RoadNetwork.java | road\_network.py | 
 | Test if arbitrage is possible | arbitrage.cc | Arbitrage.java | arbitrage.py | 
+
+## Acknowledgments
+
+A big shout-out to the hundreds of users who tried out the release over the past couple of months. As always, we never fail to be impressed by the enthusiasm and commitment our readers have; it has served to bring out the best in us.
+We all thank [Viacheslav Kroilov](https://github.com/metopa), for applying his exceptional software engineering skills to make EPI Judge a reality.

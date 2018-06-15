@@ -1,30 +1,28 @@
 package epi;
-
 import epi.test_framework.EpiTest;
 import epi.test_framework.RandomSequenceChecker;
-import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestFailureException;
-import epi.test_framework.TestTimer;
-
+import epi.test_framework.GenericTest;
+import epi.test_framework.TestFailure;
+import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 public class RandomSubset {
 
   // Returns a random k-sized subset of {0, 1, ..., n - 1}.
   public static List<Integer> randomSubset(int n, int k) {
-    // Implement this placeholder.
-    return null;
+    // TODO - you fill in here.
+    return Collections.emptyList();
   }
-
-  private static boolean randomSubsetRunner(TestTimer timer, int n, int k) {
+  private static boolean randomSubsetRunner(TimedExecutor executor, int n,
+                                            int k) throws Exception {
     List<List<Integer>> results = new ArrayList<>();
-    timer.start();
-    for (int i = 0; i < 1000000; ++i) {
-      results.add(randomSubset(n, k));
-    }
-    timer.stop();
+
+    executor.run(() -> {
+      for (int i = 0; i < 1000000; ++i) {
+        results.add(randomSubset(n, k));
+      }
+    });
 
     int totalPossibleOutcomes = RandomSequenceChecker.binomialCoefficient(n, k);
     List<Integer> A = new ArrayList<>(n);
@@ -44,15 +42,18 @@ public class RandomSubset {
         sequence, totalPossibleOutcomes, 0.01);
   }
 
-  @EpiTest(testfile = "random_subset.tsv")
-  public static void randomSubsetWrapper(TestTimer timer, int n, int k)
-      throws TestFailureException {
+  @EpiTest(testDataFile = "random_subset.tsv")
+  public static void randomSubsetWrapper(TimedExecutor executor, int n, int k)
+      throws Exception {
     RandomSequenceChecker.runFuncWithRetries(
-        () -> randomSubsetRunner(timer, n, k));
+        () -> randomSubsetRunner(executor, n, k));
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "RandomSubset.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

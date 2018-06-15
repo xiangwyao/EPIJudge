@@ -1,31 +1,27 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestTimer;
-
+import epi.test_framework.GenericTest;
+import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
 import java.util.List;
-
 public class ReplaceAndRemove {
 
   public static int replaceAndRemove(int size, char[] s) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return 0;
   }
-
-  @EpiTest(testfile = "replace_and_remove.tsv")
+  @EpiTest(testDataFile = "replace_and_remove.tsv")
   public static List<String>
-  replaceAndRemoveWrapper(TestTimer timer, Integer size, List<String> s) {
+  replaceAndRemoveWrapper(TimedExecutor executor, Integer size, List<String> s)
+      throws Exception {
     char[] sCopy = new char[s.size()];
     for (int i = 0; i < size; ++i) {
       if (!s.get(i).isEmpty()) {
         sCopy[i] = s.get(i).charAt(0);
       }
     }
-    timer.start();
-    Integer resSize = replaceAndRemove(size, sCopy);
-    timer.stop();
+
+    Integer resSize = executor.run(() -> replaceAndRemove(size, sCopy));
 
     List<String> result = new ArrayList<>();
     for (int i = 0; i < resSize; ++i) {
@@ -35,7 +31,10 @@ public class ReplaceAndRemove {
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "ReplaceAndRemove.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

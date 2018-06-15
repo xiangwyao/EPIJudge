@@ -1,13 +1,12 @@
-from binary_tree_node import BinaryTreeNode
+from test_framework import generic_test
 
 
 def sum_root_to_leaf(tree, partial_path_sum=0):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return 0
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('sum_root_to_leaf.tsv',
-                                              sum_root_to_leaf)
+    exit(
+        generic_test.generic_test_main(
+            "sum_root_to_leaf.py", 'sum_root_to_leaf.tsv', sum_root_to_leaf))

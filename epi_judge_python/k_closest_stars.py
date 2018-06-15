@@ -1,6 +1,8 @@
+import functools
 import math
 
-from test_framework.test_utils import enable_timer_hook
+from test_framework import generic_test
+from test_framework.test_utils import enable_executor_hook
 
 
 class Star:
@@ -25,7 +27,7 @@ class Star:
 
 
 def find_closest_k_stars(stars, k):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return []
 
 
@@ -37,15 +39,15 @@ def comp(expected_output, output):
         for s, d in zip(sorted(output), expected_output))
 
 
-@enable_timer_hook
-def find_closest_k_stars_wrapper(timer, stars, k):
+@enable_executor_hook
+def find_closest_k_stars_wrapper(executor, stars, k):
     stars = [Star(*a) for a in stars]
-    timer.start()
-    return find_closest_k_stars(iter(stars), k)
+    return executor.run(
+        functools.partial(find_closest_k_stars, iter(stars), k))
 
-
-from test_framework import test_utils_generic_main, test_utils
 
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main(
-        "k_closest_stars.tsv", find_closest_k_stars_wrapper, comp)
+    exit(
+        generic_test.generic_test_main("k_closest_stars.py",
+                                       "k_closest_stars.tsv",
+                                       find_closest_k_stars_wrapper, comp))

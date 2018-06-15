@@ -1,13 +1,11 @@
 package epi;
-
 import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
-import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestFailureException;
-
+import epi.test_framework.GenericTest;
+import epi.test_framework.TestFailure;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
 public class SearchMaze {
   @EpiUserType(ctorParams = {int.class, int.class})
 
@@ -37,14 +35,13 @@ public class SearchMaze {
     }
   }
 
-  public static enum Color { WHITE, BLACK }
+  public enum Color { WHITE, BLACK }
 
   public static List<Coordinate> searchMaze(List<List<Color>> maze,
                                             Coordinate s, Coordinate e) {
-    // Implement this placeholder.
-    return null;
+    // TODO - you fill in here.
+    return Collections.emptyList();
   }
-
   public static boolean pathElementIsFeasible(List<List<Integer>> maze,
                                               Coordinate prev, Coordinate cur) {
     if (!(0 <= cur.x && cur.x < maze.size() && 0 <= cur.y &&
@@ -57,10 +54,10 @@ public class SearchMaze {
         cur.x == prev.x && cur.y == prev.y - 1;
   }
 
-  @EpiTest(testfile = "search_maze.tsv")
+  @EpiTest(testDataFile = "search_maze.tsv")
   public static boolean searchMazeWrapper(List<List<Integer>> maze,
                                           Coordinate s, Coordinate e)
-      throws TestFailureException {
+      throws TestFailure {
     List<List<Color>> colored = new ArrayList<>();
     for (List<Integer> col : maze) {
       List<Color> tmp = new ArrayList<>();
@@ -75,13 +72,12 @@ public class SearchMaze {
     }
 
     if (!path.get(0).equals(s) || !path.get(path.size() - 1).equals(e)) {
-      throw new TestFailureException(
-          "Path doesn't lay between start and end points");
+      throw new TestFailure("Path doesn't lay between start and end points");
     }
 
     for (int i = 1; i < path.size(); i++) {
       if (!pathElementIsFeasible(maze, path.get(i - 1), path.get(i))) {
-        throw new TestFailureException("Path contains invalid segments");
+        throw new TestFailure("Path contains invalid segments");
       }
     }
 
@@ -89,7 +85,10 @@ public class SearchMaze {
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "SearchMaze.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

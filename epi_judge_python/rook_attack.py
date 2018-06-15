@@ -1,5 +1,10 @@
+import copy
+
+from test_framework import generic_test
+
+
 def rook_attack(A):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return
 
 
@@ -9,8 +14,7 @@ def rook_attack_wrapper(A):
     return a_copy
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('rook_attack.tsv',
-                                              rook_attack_wrapper)
+    exit(
+        generic_test.generic_test_main("rook_attack.py", 'rook_attack.tsv',
+                                       rook_attack_wrapper))

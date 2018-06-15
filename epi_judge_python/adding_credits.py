@@ -1,25 +1,26 @@
-from test_framework.test_failure_exception import TestFailureException
+from test_framework import generic_test
+from test_framework.test_failure import TestFailure
 
 
 class ClientsCreditsInfo:
     def insert(self, client_id, c):
-        # Implement this placeholder.
+        # TODO - you fill in here.
         return
 
     def remove(self, client_id):
-        # Implement this placeholder.
+        # TODO - you fill in here.
         return True
 
     def lookup(self, client_id):
-        # Implement this placeholder.
+        # TODO - you fill in here.
         return 0
 
     def add_all(self, C):
-        # Implement this placeholder.
+        # TODO - you fill in here.
         return
 
     def max(self):
-        # Implement this placeholder.
+        # TODO - you fill in here.
         return ''
 
 
@@ -35,11 +36,11 @@ def client_credits_info_tester(ops):
         if op == 'max':
             result = cr.max()
             if result != s_arg:
-                raise TestFailureException('Max: return value mismatch')
+                raise TestFailure('Max: return value mismatch')
         elif op == 'remove':
             result = cr.remove(s_arg)
             if result != i_arg:
-                raise TestFailureException('Remove: return value mismatch')
+                raise TestFailure('Remove: return value mismatch')
         elif op == 'insert':
             cr.insert(s_arg, i_arg)
         elif op == "add_all":
@@ -47,11 +48,11 @@ def client_credits_info_tester(ops):
         elif op == "lookup":
             result = cr.lookup(s_arg)
             if result != i_arg:
-                raise TestFailureException('Lookup: return value mismatch')
+                raise TestFailure('Lookup: return value mismatch')
 
-
-from test_framework import test_utils_generic_main, test_utils
 
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('adding_credits.tsv',
-                                              client_credits_info_tester)
+    exit(
+        generic_test.generic_test_main("adding_credits.py",
+                                       'adding_credits.tsv',
+                                       client_credits_info_tester))

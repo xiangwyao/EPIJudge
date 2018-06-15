@@ -1,10 +1,13 @@
+from test_framework import generic_test
+
+
 def can_form_palindrome(s):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return True
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('can_string_be_palindrome.tsv',
-                                              can_form_palindrome)
+    exit(
+        generic_test.generic_test_main(
+            "is_string_permutable_to_palindrome.py",
+            'is_string_permutable_to_palindrome.tsv', can_form_palindrome))

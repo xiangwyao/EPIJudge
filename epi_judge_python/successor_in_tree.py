@@ -1,25 +1,26 @@
-from test_framework.test_utils import enable_timer_hook
+import functools
+
+from test_framework import generic_test
 from test_framework.binary_tree_utils import must_find_node
+from test_framework.test_utils import enable_executor_hook
 
 
 def find_successor(node):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return None
 
 
-@enable_timer_hook
-def find_successor_wrapper(timer, tree, node_idx):
+@enable_executor_hook
+def find_successor_wrapper(executor, tree, node_idx):
     node = must_find_node(tree, node_idx)
 
-    timer.start()
-    result = find_successor(node)
-    timer.stop()
+    result = executor.run(functools.partial(find_successor, node))
 
     return result.data if result else -1
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('successor_in_tree.tsv',
-                                              find_successor_wrapper)
+    exit(
+        generic_test.generic_test_main("successor_in_tree.py",
+                                       'successor_in_tree.tsv',
+                                       find_successor_wrapper))

@@ -1,24 +1,24 @@
 import collections
+import functools
 
-from test_framework.test_utils import enable_timer_hook
+from test_framework import generic_test
+from test_framework.test_utils import enable_executor_hook
 
 Jug = collections.namedtuple('Jug', ('low', 'high'))
 
 
-def check_feasible(jugs, L, H, c=set()):
-    # Implement this placeholder.
+def check_feasible(jugs, L, H):
+    # TODO - you fill in here.
     return True
 
 
-@enable_timer_hook
-def check_feasible_wrapper(timer, A, l, h):
-    A = [Jug(*x) for x in A]
-    timer.start()
-    return check_feasible(A, l, h)
+@enable_executor_hook
+def check_feasible_wrapper(executor, jugs, l, h):
+    jugs = [Jug(*x) for x in jugs]
+    return executor.run(functools.partial(check_feasible, jugs, l, h))
 
-
-from test_framework import test_utils_generic_main, test_utils
 
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('defective_jugs.tsv',
-                                              check_feasible_wrapper)
+    exit(
+        generic_test.generic_test_main(
+            "defective_jugs.py", 'defective_jugs.tsv', check_feasible_wrapper))

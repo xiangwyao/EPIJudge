@@ -1,18 +1,19 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-
+import epi.test_framework.GenericTest;
 public class SortList {
-  @EpiTest(testfile = "sort_list.tsv")
+  @EpiTest(testDataFile = "sort_list.tsv")
 
   public static ListNode<Integer> stableSortList(ListNode<Integer> L) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return null;
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "SortList.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

@@ -1,22 +1,19 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestTimer;
-
+import epi.test_framework.GenericTest;
+import epi.test_framework.TimedExecutor;
 public class InsertInList {
 
   // Insert newNode after node.
   public static void insertAfter(ListNode<Integer> node,
                                  ListNode<Integer> newNode) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return;
   }
-
-  @EpiTest(testfile = "insert_in_list.tsv")
+  @EpiTest(testDataFile = "insert_in_list.tsv")
   public static ListNode<Integer>
-  insertListWrapper(TestTimer timer, ListNode<Integer> l, int nodeIdx,
-                    int newNodeData) {
+  insertListWrapper(TimedExecutor executor, ListNode<Integer> l, int nodeIdx,
+                    int newNodeData) throws Exception {
     ListNode<Integer> node = l;
     while (nodeIdx > 1) {
       node = node.next;
@@ -24,15 +21,17 @@ public class InsertInList {
     }
     ListNode<Integer> newNode = new ListNode<Integer>(newNodeData, null);
 
-    timer.start();
-    insertAfter(node, newNode);
-    timer.stop();
+    final ListNode<Integer> finalNode = node;
+    executor.run(() -> insertAfter(finalNode, newNode));
 
     return l;
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "InsertInList.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

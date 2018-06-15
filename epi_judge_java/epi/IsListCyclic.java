@@ -1,20 +1,18 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestFailureException;
-import epi.test_framework.TestTimer;
-
+import epi.test_framework.GenericTest;
+import epi.test_framework.TestFailure;
+import epi.test_framework.TimedExecutor;
 public class IsListCyclic {
 
   public static ListNode<Integer> hasCycle(ListNode<Integer> head) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return null;
   }
-
-  @EpiTest(testfile = "is_list_cyclic.tsv")
-  public static void HasCycleWrapper(TestTimer timer, ListNode<Integer> head,
-                                     int cycleIdx) throws TestFailureException {
+  @EpiTest(testDataFile = "is_list_cyclic.tsv")
+  public static void HasCycleWrapper(TimedExecutor executor,
+                                     ListNode<Integer> head, int cycleIdx)
+      throws Exception {
     int cycleLength = 0;
     if (cycleIdx != -1) {
       if (head == null) {
@@ -40,17 +38,15 @@ public class IsListCyclic {
       cycleLength++;
     }
 
-    timer.start();
-    ListNode<Integer> result = hasCycle(head);
-    timer.stop();
+    ListNode<Integer> result = executor.run(() -> hasCycle(head));
 
     if (cycleIdx == -1) {
       if (result != null) {
-        throw new TestFailureException("Found a non-existing cycle");
+        throw new TestFailure("Found a non-existing cycle");
       }
     } else {
       if (result == null) {
-        throw new TestFailureException("Existing cycle was not found");
+        throw new TestFailure("Existing cycle was not found");
       }
 
       ListNode<Integer> cursor = result;
@@ -58,20 +54,23 @@ public class IsListCyclic {
         cursor = cursor.next;
         cycleLength--;
         if (cursor == null || cycleLength < 0) {
-          throw new TestFailureException(
+          throw new TestFailure(
               "Returned node does not belong to the cycle or is not the closest node to the head");
         }
       } while (cursor != result);
 
       if (cycleLength != 0) {
-        throw new TestFailureException(
+        throw new TestFailure(
             "Returned node does not belong to the cycle or is not the closest node to the head");
       }
     }
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "IsListCyclic.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

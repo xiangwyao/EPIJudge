@@ -1,5 +1,8 @@
-from test_framework.test_failure_exception import TestFailureException
-from test_framework.test_utils import enable_timer_hook
+import functools
+
+from test_framework import generic_test
+from test_framework.test_failure import TestFailure
+from test_framework.test_utils import enable_executor_hook
 
 
 class BinaryTreeNode:
@@ -11,12 +14,12 @@ class BinaryTreeNode:
 
 
 def find_kth_node_binary_tree(tree, k):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return None
 
 
-@enable_timer_hook
-def find_kth_node_binary_tree_wrapper(timer, tree, k):
+@enable_executor_hook
+def find_kth_node_binary_tree_wrapper(executor, tree, k):
     def init_size(node):
         if not node:
             return 0
@@ -25,17 +28,16 @@ def find_kth_node_binary_tree_wrapper(timer, tree, k):
 
     init_size(tree)
 
-    timer.start()
-    result = find_kth_node_binary_tree(tree, k)
-    timer.stop()
+    result = executor.run(
+        functools.partial(find_kth_node_binary_tree, tree, k))
 
     if not result:
-        raise TestFailureException("Result can't be None")
+        raise TestFailure("Result can't be None")
     return result.data
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main(
-        "kth_node_in_tree.tsv", find_kth_node_binary_tree_wrapper)
+    exit(
+        generic_test.generic_test_main("kth_node_in_tree.py",
+                                       "kth_node_in_tree.tsv",
+                                       find_kth_node_binary_tree_wrapper))

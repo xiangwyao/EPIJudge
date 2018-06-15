@@ -1,32 +1,22 @@
 package epi;
-
 import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
-import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestTimer;
-
+import epi.test_framework.GenericTest;
+import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
 import java.util.List;
-
 public class DeadlockDetection {
 
   public static class GraphVertex {
-    public enum Color { WHITE, GRAY, BLACK }
-
-    public Color color;
     public List<GraphVertex> edges;
 
-    public GraphVertex() {
-      color = Color.WHITE;
-      edges = new ArrayList<>();
-    }
+    public GraphVertex() { edges = new ArrayList<>(); }
   }
 
   public static boolean isDeadlocked(List<GraphVertex> graph) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return true;
   }
-
   @EpiUserType(ctorParams = {int.class, int.class})
   public static class Edge {
     public int from;
@@ -38,9 +28,10 @@ public class DeadlockDetection {
     }
   }
 
-  @EpiTest(testfile = "deadlock_detection.tsv")
-  public static boolean isDeadlockedWrapper(TestTimer timer, int numNodes,
-                                            List<Edge> edges) {
+  @EpiTest(testDataFile = "deadlock_detection.tsv")
+  public static boolean isDeadlockedWrapper(TimedExecutor executor,
+                                            int numNodes, List<Edge> edges)
+      throws Exception {
     if (numNodes <= 0) {
       throw new RuntimeException("Invalid numNodes value");
     }
@@ -55,14 +46,14 @@ public class DeadlockDetection {
       graph.get(e.from).edges.add(graph.get(e.to));
     }
 
-    timer.start();
-    boolean result = isDeadlocked(graph);
-    timer.stop();
-    return result;
+    return executor.run(() -> isDeadlocked(graph));
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "DeadlockDetection.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

@@ -1,29 +1,29 @@
-from test_framework.test_failure_exception import TestFailureException
-from test_framework.test_utils import enable_timer_hook
+import functools
+
+from test_framework import generic_test
+from test_framework.test_failure import TestFailure
+from test_framework.test_utils import enable_executor_hook
 
 
 def exterior_binary_tree(tree):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return []
 
 
 def create_output_list(L):
     if any(l is None for l in L):
-        raise TestFailureException('Resulting list contains None')
+        raise TestFailure('Resulting list contains None')
     return [l.data for l in L]
 
 
-@enable_timer_hook
-def create_output_list_wrapper(timer, tree):
-    timer.start()
-    tree = exterior_binary_tree(tree)
-    timer.stop()
+@enable_executor_hook
+def create_output_list_wrapper(executor, tree):
+    result = executor.run(functools.partial(exterior_binary_tree, tree))
 
-    return create_output_list(tree)
+    return create_output_list(result)
 
-
-from test_framework import test_utils_generic_main, test_utils
 
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('tree_exterior.tsv',
-                                              create_output_list_wrapper)
+    exit(
+        generic_test.generic_test_main("tree_exterior.py", 'tree_exterior.tsv',
+                                       create_output_list_wrapper))

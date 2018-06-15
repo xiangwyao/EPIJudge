@@ -1,28 +1,24 @@
 #include <vector>
-
-#include "test_framework/test_failure_exception.h"
-#include "test_framework/test_utils_serialization_traits.h"
+#include "test_framework/generic_test.h"
+#include "test_framework/serialization_traits.h"
+#include "test_framework/test_failure.h"
 
 class LruCache {
  public:
   LruCache(size_t capacity) {}
-
   int Lookup(int isbn) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return 0;
   }
-
   void Insert(int isbn, int price) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return;
   }
-
   bool Erase(int isbn) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return true;
   }
 };
-
 struct Op {
   std::string code;
   int arg1;
@@ -43,18 +39,16 @@ void RunTest(const std::vector<Op>& commands) {
     if (cmd.code == "lookup") {
       int result = cache.Lookup(cmd.arg1);
       if (result != cmd.arg2) {
-        throw TestFailureException("Lookup: expected " +
-                                   std::to_string(cmd.arg2) + ", got " +
-                                   std::to_string(result));
+        throw TestFailure("Lookup: expected " + std::to_string(cmd.arg2) +
+                          ", got " + std::to_string(result));
       }
     } else if (cmd.code == "insert") {
       cache.Insert(cmd.arg1, cmd.arg2);
     } else if (cmd.code == "erase") {
       bool result = cache.Erase(cmd.arg1);
       if (result != cmd.arg2) {
-        throw TestFailureException("Erase: expected " +
-                                   std::to_string(cmd.arg2) + ", got " +
-                                   std::to_string(result));
+        throw TestFailure("Erase: expected " + std::to_string(cmd.arg2) +
+                          ", got " + std::to_string(result));
       }
     } else {
       throw std::runtime_error("Unexpected command " + cmd.code);
@@ -62,10 +56,9 @@ void RunTest(const std::vector<Op>& commands) {
   }
 }
 
-#include "test_framework/test_utils_generic_main.h"
-
 int main(int argc, char* argv[]) {
+  std::vector<std::string> args{argv + 1, argv + argc};
   std::vector<std::string> param_names{"commands"};
-  generic_test_main(argc, argv, param_names, "lru_cache.tsv", &RunTest);
-  return 0;
+  return GenericTestMain(args, "lru_cache.cc", "lru_cache.tsv", &RunTest,
+                         DefaultComparator{}, param_names);
 }

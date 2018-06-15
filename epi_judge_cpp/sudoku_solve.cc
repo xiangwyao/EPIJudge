@@ -2,19 +2,16 @@
 #include <cmath>
 #include <iterator>
 #include <vector>
-
-#include "test_framework/test_failure_exception.h"
-#include "test_framework/test_timer.h"
-
+#include "test_framework/generic_test.h"
+#include "test_framework/test_failure.h"
+#include "test_framework/timed_executor.h"
 using std::begin;
 using std::end;
 using std::vector;
-
 bool SolveSudoku(vector<vector<int>>* partial_assignment) {
-  // Implement this placeholder.
+  // TODO - you fill in here.
   return true;
 }
-
 vector<int> GatherColumn(const vector<vector<int>>& data, size_t i) {
   vector<int> result;
   for (auto& row : data) {
@@ -41,25 +38,23 @@ void AssertUniqueSeq(const vector<int>& seq) {
   vector<bool> seen(seq.size(), false);
   for (auto& x : seq) {
     if (x == 0) {
-      throw TestFailureException("Cell left uninitialized");
+      throw TestFailure("Cell left uninitialized");
     }
     if (x < 0 || x > seq.size()) {
-      throw TestFailureException("Cell value out of range");
+      throw TestFailure("Cell value out of range");
     }
     if (seen[x - 1]) {
-      throw TestFailureException("Duplicate value in section");
+      throw TestFailure("Duplicate value in section");
     }
     seen[x - 1] = true;
   }
 }
 
-void SolveSudokuWrapper(TestTimer& timer,
+void SolveSudokuWrapper(TimedExecutor& executor,
                         const vector<vector<int>>& partial_assignment) {
   vector<vector<int>> solved = partial_assignment;
 
-  timer.Start();
-  SolveSudoku(&solved);
-  timer.Stop();
+  executor.Run([&] { SolveSudoku(&solved); });
 
   if (!std::equal(begin(partial_assignment), end(partial_assignment),
                   begin(solved), end(solved), [](auto br, auto cr) {
@@ -68,7 +63,7 @@ void SolveSudokuWrapper(TestTimer& timer,
                                         return bcell == 0 || bcell == ccell;
                                       });
                   }))
-    throw TestFailureException("Initial cell assignment has been changed");
+    throw TestFailure("Initial cell assignment has been changed");
 
   auto block_size = static_cast<size_t>(sqrt(solved.size()));
 
@@ -79,11 +74,9 @@ void SolveSudokuWrapper(TestTimer& timer,
   }
 }
 
-#include "test_framework/test_utils_generic_main.h"
-
 int main(int argc, char* argv[]) {
-  std::vector<std::string> param_names{"timer", "partial_assignment"};
-  generic_test_main(argc, argv, param_names, "sudoku_solve.tsv",
-                    &SolveSudokuWrapper);
-  return 0;
+  std::vector<std::string> args{argv + 1, argv + argc};
+  std::vector<std::string> param_names{"executor", "partial_assignment"};
+  return GenericTestMain(args, "sudoku_solve.cc", "sudoku_solve.tsv",
+                         &SolveSudokuWrapper, DefaultComparator{}, param_names);
 }

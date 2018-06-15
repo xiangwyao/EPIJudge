@@ -1,36 +1,35 @@
 import collections
+import functools
 
-from test_framework.test_failure_exception import TestFailureException
-from test_framework.test_utils import enable_timer_hook
+from test_framework import generic_test
+from test_framework.test_failure import TestFailure
+from test_framework.test_utils import enable_executor_hook
 
 
 def even_odd(A):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return
 
 
-@enable_timer_hook
-def even_odd_wrapper(timer, A):
+@enable_executor_hook
+def even_odd_wrapper(executor, A):
     before = collections.Counter(A)
 
-    timer.start()
-    even_odd(A)
-    timer.stop()
+    executor.run(functools.partial(even_odd, A))
 
     in_odd = False
     for a in A:
         if a % 2 == 0:
             if in_odd:
-                raise TestFailureException("Even elements appear in odd part")
+                raise TestFailure("Even elements appear in odd part")
         else:
             in_odd = True
     after = collections.Counter(A)
     if before != after:
-        raise TestFailureException("Elements mismatch")
+        raise TestFailure("Elements mismatch")
 
-
-from test_framework import test_utils_generic_main, test_utils
 
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('even_odd_array.tsv',
-                                              even_odd_wrapper)
+    exit(
+        generic_test.generic_test_main("even_odd_array.py",
+                                       'even_odd_array.tsv', even_odd_wrapper))

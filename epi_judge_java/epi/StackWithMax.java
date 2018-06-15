@@ -1,38 +1,30 @@
 package epi;
-
 import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
-import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestFailureException;
-
+import epi.test_framework.GenericTest;
+import epi.test_framework.TestFailure;
 import java.util.List;
 import java.util.NoSuchElementException;
-
 public class StackWithMax {
 
   public static class Stack {
-
     public boolean empty() {
-      // Implement this placeholder.
+      // TODO - you fill in here.
       return true;
     }
-
     public Integer max() {
-      // Implement this placeholder.
+      // TODO - you fill in here.
       return 0;
     }
-
     public Integer pop() {
-      // Implement this placeholder.
+      // TODO - you fill in here.
       return 0;
     }
-
     public void push(Integer x) {
-      // Implement this placeholder.
+      // TODO - you fill in here.
       return;
     }
   }
-
   @EpiUserType(ctorParams = {String.class, int.class})
   public static class StackOp {
     public String op;
@@ -44,8 +36,8 @@ public class StackWithMax {
     }
   }
 
-  @EpiTest(testfile = "stack_with_max.tsv")
-  public static void stackTest(List<StackOp> ops) throws TestFailureException {
+  @EpiTest(testDataFile = "stack_with_max.tsv")
+  public static void stackTest(List<StackOp> ops) throws TestFailure {
     try {
       Stack s = new Stack();
       int result;
@@ -60,25 +52,22 @@ public class StackWithMax {
         case "pop":
           result = s.pop();
           if (result != op.arg) {
-            throw new TestFailureException("Pop: expected " +
-                                           String.valueOf(op.arg) + ", got " +
-                                           String.valueOf(result));
+            throw new TestFailure("Pop: expected " + String.valueOf(op.arg) +
+                                  ", got " + String.valueOf(result));
           }
           break;
         case "max":
           result = s.max();
           if (result != op.arg) {
-            throw new TestFailureException("Max: expected " +
-                                           String.valueOf(op.arg) + ", got " +
-                                           String.valueOf(result));
+            throw new TestFailure("Max: expected " + String.valueOf(op.arg) +
+                                  ", got " + String.valueOf(result));
           }
           break;
         case "empty":
           result = s.empty() ? 1 : 0;
           if (result != op.arg) {
-            throw new TestFailureException("Empty: expected " +
-                                           String.valueOf(op.arg) + ", got " +
-                                           String.valueOf(s));
+            throw new TestFailure("Empty: expected " + String.valueOf(op.arg) +
+                                  ", got " + String.valueOf(s));
           }
           break;
         default:
@@ -86,12 +75,15 @@ public class StackWithMax {
         }
       }
     } catch (NoSuchElementException e) {
-      throw new TestFailureException("Unexpected NoSuchElement exception");
+      throw new TestFailure("Unexpected NoSuchElement exception");
     }
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "StackWithMax.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

@@ -1,21 +1,18 @@
 package epi;
-
 import epi.test_framework.EpiTest;
 import epi.test_framework.RandomSequenceChecker;
-import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestFailureException;
-import epi.test_framework.TestTimer;
-
+import epi.test_framework.GenericTest;
+import epi.test_framework.TestFailure;
+import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
 public class RandomPermutation {
 
   public static List<Integer> computeRandomPermutation(int n) {
-    // Implement this placeholder.
-    return null;
+    // TODO - you fill in here.
+    return Collections.emptyList();
   }
-
   private static int factorial(int n) {
     return n <= 1 ? 1 : n * factorial(n - 1);
   }
@@ -36,14 +33,16 @@ public class RandomPermutation {
     return idx;
   }
 
-  private static boolean computeRandomPermutationRunner(TestTimer timer,
-                                                        int n) {
+  private static boolean computeRandomPermutationRunner(TimedExecutor executor,
+                                                        int n)
+      throws Exception {
     List<List<Integer>> results = new ArrayList<>();
-    timer.start();
-    for (int i = 0; i < 1000000; ++i) {
-      results.add(computeRandomPermutation(n));
-    }
-    timer.stop();
+
+    executor.run(() -> {
+      for (int i = 0; i < 1000000; ++i) {
+        results.add(computeRandomPermutation(n));
+      }
+    });
 
     List<Integer> sequence = new ArrayList<>();
     for (List<Integer> result : results) {
@@ -53,15 +52,18 @@ public class RandomPermutation {
         sequence, factorial(n), 0.01);
   }
 
-  @EpiTest(testfile = "random_permutation.tsv")
-  public static void computeRandomPermutationWrapper(TestTimer timer, int n)
-      throws TestFailureException {
+  @EpiTest(testDataFile = "random_permutation.tsv")
+  public static void computeRandomPermutationWrapper(TimedExecutor executor,
+                                                     int n) throws Exception {
     RandomSequenceChecker.runFuncWithRetries(
-        () -> computeRandomPermutationRunner(timer, n));
+        () -> computeRandomPermutationRunner(executor, n));
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "RandomPermutation.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

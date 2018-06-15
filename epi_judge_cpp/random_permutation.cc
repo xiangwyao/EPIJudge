@@ -1,17 +1,14 @@
 #include <functional>
 #include <vector>
-
+#include "test_framework/generic_test.h"
 #include "test_framework/random_sequence_checker.h"
-#include "test_framework/test_timer.h"
-
+#include "test_framework/timed_executor.h"
 using std::bind;
 using std::vector;
-
 vector<int> ComputeRandomPermutation(int n) {
-  // Implement this placeholder.
+  // TODO - you fill in here.
   return {};
 }
-
 int Factorial(int n) { return n <= 1 ? 1 : n * Factorial(n - 1); }
 
 int PermutationIndex(vector<int> perm) {
@@ -30,13 +27,14 @@ int PermutationIndex(vector<int> perm) {
   return idx;
 }
 
-bool ComputeRandomPermutationRunner(TestTimer& timer, int n) {
+bool ComputeRandomPermutationRunner(TimedExecutor& executor, int n) {
   vector<vector<int>> results;
-  timer.Start();
-  for (int i = 0; i < 1000000; ++i) {
-    results.emplace_back(ComputeRandomPermutation(n));
-  }
-  timer.Stop();
+
+  executor.Run([&] {
+    for (int i = 0; i < 1000000; ++i) {
+      results.emplace_back(ComputeRandomPermutation(n));
+    }
+  });
 
   vector<int> sequence;
   for (const vector<int>& result : results) {
@@ -45,16 +43,15 @@ bool ComputeRandomPermutationRunner(TestTimer& timer, int n) {
   return CheckSequenceIsUniformlyRandom(sequence, Factorial(n), 0.01);
 }
 
-void ComputeRandomPermutationWrapper(TestTimer& timer, int n) {
+void ComputeRandomPermutationWrapper(TimedExecutor& executor, int n) {
   RunFuncWithRetries(
-      std::bind(ComputeRandomPermutationRunner, std::ref(timer), n));
+      std::bind(ComputeRandomPermutationRunner, std::ref(executor), n));
 }
 
-#include "test_framework/test_utils_generic_main.h"
-
 int main(int argc, char* argv[]) {
-  std::vector<std::string> param_names{"timer", "n"};
-  generic_test_main(argc, argv, param_names, "random_permutation.tsv",
-                    &ComputeRandomPermutationWrapper);
-  return 0;
+  std::vector<std::string> args{argv + 1, argv + argc};
+  std::vector<std::string> param_names{"executor", "n"};
+  return GenericTestMain(
+      args, "random_permutation.cc", "random_permutation.tsv",
+      &ComputeRandomPermutationWrapper, DefaultComparator{}, param_names);
 }

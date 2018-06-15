@@ -1,21 +1,22 @@
-from test_framework.test_failure_exception import TestFailureException
+from test_framework import generic_test
+from test_framework.test_failure import TestFailure
 
 
 class Stack:
     def empty(self):
-        # Implement this placeholder.
+        # TODO - you fill in here.
         return True
 
     def max(self):
-        # Implement this placeholder.
+        # TODO - you fill in here.
         return 0
 
     def pop(self):
-        # Implement this placeholder.
+        # TODO - you fill in here.
         return 0
 
     def push(self, x):
-        # Implement this placeholder.
+        # TODO - you fill in here.
         return
 
 
@@ -31,26 +32,25 @@ def stack_tester(ops):
             elif op == 'pop':
                 result = s.pop()
                 if result != arg:
-                    raise TestFailureException(
+                    raise TestFailure(
                         "Pop: expected " + str(arg) + ", got " + str(result))
             elif op == 'max':
                 result = s.max()
                 if result != arg:
-                    raise TestFailureException(
+                    raise TestFailure(
                         "Max: expected " + str(arg) + ", got " + str(result))
             elif op == 'empty':
                 result = int(s.empty())
                 if result != arg:
-                    raise TestFailureException(
+                    raise TestFailure(
                         "Empty: expected " + str(arg) + ", got " + str(result))
             else:
                 raise RuntimeError("Unsupported stack operation: " + op)
     except IndexError:
-        raise TestFailureException('Unexpected IndexError exception')
+        raise TestFailure('Unexpected IndexError exception')
 
-
-from test_framework import test_utils_generic_main, test_utils
 
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('stack_with_max.tsv',
-                                              stack_tester)
+    exit(
+        generic_test.generic_test_main("stack_with_max.py",
+                                       'stack_with_max.tsv', stack_tester))

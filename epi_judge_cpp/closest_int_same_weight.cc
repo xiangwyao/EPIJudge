@@ -1,15 +1,13 @@
-
-
-unsigned long ClosestIntSameBitCount(unsigned long x) {
-  // Implement this placeholder.
+#include "test_framework/generic_test.h"
+unsigned long long ClosestIntSameBitCount(unsigned long long x) {
+  // TODO - you fill in here.
   return 0;
 }
 
-#include "test_framework/test_utils_generic_main.h"
-
 int main(int argc, char* argv[]) {
+  std::vector<std::string> args{argv + 1, argv + argc};
   std::vector<std::string> param_names{"x"};
-  generic_test_main(argc, argv, param_names, "closest_int_same_weight.tsv",
-                    &ClosestIntSameBitCount);
-  return 0;
+  return GenericTestMain(args, "closest_int_same_weight.cc",
+                         "closest_int_same_weight.tsv", &ClosestIntSameBitCount,
+                         DefaultComparator{}, param_names);
 }

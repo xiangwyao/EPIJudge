@@ -1,20 +1,20 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-
+import epi.test_framework.GenericTest;
 import java.util.List;
-
 public class Arbitrage {
-  @EpiTest(testfile = "arbitrage.tsv")
+  @EpiTest(testDataFile = "arbitrage.tsv")
 
   public static boolean isArbitrageExist(List<List<Double>> graph) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return true;
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "Arbitrage.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

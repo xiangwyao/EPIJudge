@@ -1,12 +1,15 @@
+from test_framework import generic_test, test_utils
+
+
 def phone_mnemonic(phone_number):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return []
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main(
-        'phone_number_mnemonic.tsv',
-        phone_mnemonic,
-        comp=test_utils.unordered_compare)
+    exit(
+        generic_test.generic_test_main(
+            "phone_number_mnemonic.py",
+            'phone_number_mnemonic.tsv',
+            phone_mnemonic,
+            comparator=test_utils.unordered_compare))

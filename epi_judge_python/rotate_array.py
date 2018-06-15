@@ -1,22 +1,22 @@
-from test_framework.test_utils import enable_timer_hook
+import functools
+
+from test_framework import generic_test
+from test_framework.test_utils import enable_executor_hook
 
 
 def rotate_array(rotate_amount, A):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return
 
 
-@enable_timer_hook
-def rotate_array_wrapper(timer, A, rotate_amount):
+@enable_executor_hook
+def rotate_array_wrapper(executor, A, rotate_amount):
     a_copy = A[:]
-    timer.start()
-    rotate_array(rotate_amount, a_copy)
-    timer.stop()
+    executor.run(functools.partial(rotate_array, rotate_amount, a_copy))
     return a_copy
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('rotate_array.tsv',
-                                              rotate_array_wrapper)
+    exit(
+        generic_test.generic_test_main("rotate_array.py", 'rotate_array.tsv',
+                                       rotate_array_wrapper))

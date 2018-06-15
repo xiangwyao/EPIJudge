@@ -1,9 +1,11 @@
-from binary_tree_node import BinaryTreeNode
-from test_framework.test_utils import enable_timer_hook
+import functools
+
+from test_framework import generic_test
+from test_framework.test_utils import enable_executor_hook
 
 
 def generate_all_binary_trees(num_nodes):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return []
 
 
@@ -19,17 +21,16 @@ def serialize_structure(tree):
     return result
 
 
-@enable_timer_hook
-def generate_all_binary_trees_wrapper(timer, num_nodes):
-    timer.start()
-    result = generate_all_binary_trees(num_nodes)
-    timer.stop()
+@enable_executor_hook
+def generate_all_binary_trees_wrapper(executor, num_nodes):
+    result = executor.run(
+        functools.partial(generate_all_binary_trees, num_nodes))
 
     return sorted(map(serialize_structure, result))
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main(
-        'enumerate_trees.tsv', generate_all_binary_trees_wrapper)
+    exit(
+        generic_test.generic_test_main("enumerate_trees.py",
+                                       'enumerate_trees.tsv',
+                                       generate_all_binary_trees_wrapper))

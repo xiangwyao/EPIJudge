@@ -1,21 +1,19 @@
 package epi;
-
 import epi.test_framework.EpiTest;
-import epi.test_framework.GenericTestHandler;
-import epi.test_framework.TestTimer;
-
+import epi.test_framework.GenericTest;
+import epi.test_framework.TimedExecutor;
 public class DeleteNodeFromList {
 
   // Assumes nodeToDelete is not tail.
   public static void deletionFromList(ListNode<Integer> nodeToDelete) {
-    // Implement this placeholder.
+    // TODO - you fill in here.
     return;
   }
-
-  @EpiTest(testfile = "delete_node_from_list.tsv")
-  public static ListNode<Integer> deleteListWrapper(TestTimer timer,
+  @EpiTest(testDataFile = "delete_node_from_list.tsv")
+  public static ListNode<Integer> deleteListWrapper(TimedExecutor executor,
                                                     ListNode<Integer> head,
-                                                    int nodeToDeleteIdx) {
+                                                    int nodeToDeleteIdx)
+      throws Exception {
     ListNode<Integer> nodeToDelete = head;
     if (nodeToDelete == null)
       throw new RuntimeException("List is empty");
@@ -25,15 +23,17 @@ public class DeleteNodeFromList {
       nodeToDelete = nodeToDelete.next;
     }
 
-    timer.start();
-    deletionFromList(nodeToDelete);
-    timer.stop();
+    final ListNode<Integer> finalNodeToDelete = nodeToDelete;
+    executor.run(() -> deletionFromList(finalNodeToDelete));
 
     return head;
   }
 
   public static void main(String[] args) {
-    GenericTestHandler.executeTestsByAnnotation(
-        new Object() {}.getClass().getEnclosingClass(), args);
+    System.exit(
+        GenericTest
+            .runFromAnnotations(args, "DeleteNodeFromList.java",
+                                new Object() {}.getClass().getEnclosingClass())
+            .ordinal());
   }
 }

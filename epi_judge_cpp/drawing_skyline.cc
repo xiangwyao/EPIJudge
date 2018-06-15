@@ -1,36 +1,32 @@
 #include <vector>
-
-#include "test_framework/test_utils_serialization_traits.h"
-
+#include "test_framework/fmt_print.h"
+#include "test_framework/generic_test.h"
+#include "test_framework/serialization_traits.h"
 using std::vector;
 
-struct Rectangle {
+struct Rect {
   int left, right, height;
 };
-typedef vector<Rectangle> Skyline;
+typedef vector<Rect> Skyline;
 
-Skyline ComputeSkyline(const vector<Rectangle>& buildings) {
-  // Implement this placeholder.
+Skyline ComputeSkyline(const vector<Rect>& buildings) {
+  // TODO - you fill in here.
   return {};
 }
-
-bool operator==(const Rectangle& a, const Rectangle& b) {
+bool operator==(const Rect& a, const Rect& b) {
   return a.left == b.left && a.right == b.right && a.height == b.height;
 }
 
 template <>
-struct SerializationTraits<Rectangle>
-    : UserSerTraits<Rectangle, int, int, int> {};
+struct SerializationTraits<Rect> : UserSerTraits<Rect, int, int, int> {};
 
-std::ostream& operator<<(std::ostream& out, const Rectangle& r) {
-  return EpiPrint(out, std::make_tuple(r.left, r.right, r.height));
+std::ostream& operator<<(std::ostream& out, const Rect& r) {
+  return PrintTo(out, std::make_tuple(r.left, r.right, r.height));
 }
 
-#include "test_framework/test_utils_generic_main.h"
-
 int main(int argc, char* argv[]) {
+  std::vector<std::string> args{argv + 1, argv + argc};
   std::vector<std::string> param_names{"buildings"};
-  generic_test_main(argc, argv, param_names, "drawing_skyline.tsv",
-                    &ComputeSkyline);
-  return 0;
+  return GenericTestMain(args, "drawing_skyline.cc", "drawing_skyline.tsv",
+                         &ComputeSkyline, DefaultComparator{}, param_names);
 }

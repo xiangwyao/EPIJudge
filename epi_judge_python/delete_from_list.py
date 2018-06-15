@@ -1,14 +1,17 @@
-from test_framework.test_utils import enable_timer_hook
+import functools
+
+from test_framework import generic_test
+from test_framework.test_utils import enable_executor_hook
 
 
 # Delete the node past this one. Assume node is not a tail.
 def delete_after(node):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return
 
 
-@enable_timer_hook
-def delete_from_list_wrapper(timer, head, node_idx):
+@enable_executor_hook
+def delete_from_list_wrapper(executor, head, node_idx):
     node_to_delete = head
     prev = None
     if node_to_delete is None:
@@ -19,15 +22,13 @@ def delete_from_list_wrapper(timer, head, node_idx):
         prev = node_to_delete
         node_to_delete = node_to_delete.next
 
-    timer.start()
-    delete_after(prev)
-    timer.stop()
+    executor.run(functools.partial(delete_after, prev))
 
     return head
 
 
-from test_framework import test_utils_generic_main, test_utils
-
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('delete_from_list.tsv',
-                                              delete_from_list_wrapper)
+    exit(
+        generic_test.generic_test_main("delete_from_list.py",
+                                       'delete_from_list.tsv',
+                                       delete_from_list_wrapper))

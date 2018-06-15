@@ -1,16 +1,17 @@
-from is_list_cyclic import has_cycle
-from do_terminated_lists_overlap import overlapping_no_cycle_lists
-from test_framework.test_failure_exception import TestFailureException
-from test_framework.test_utils import enable_timer_hook
+import functools
+
+from test_framework import generic_test
+from test_framework.test_failure import TestFailure
+from test_framework.test_utils import enable_executor_hook
 
 
 def overlapping_lists(l0, l1):
-    # Implement this placeholder.
+    # TODO - you fill in here.
     return None
 
 
-@enable_timer_hook
-def overlapping_lists_wrapper(timer, l0, l1, common, cycle0, cycle1):
+@enable_executor_hook
+def overlapping_lists_wrapper(executor, l0, l1, common, cycle0, cycle1):
     if common:
         if not l0:
             l0 = common
@@ -56,16 +57,14 @@ def overlapping_lists_wrapper(timer, l0, l1, common, cycle0, cycle1):
         common_nodes.add(id(it))
         it = it.next
 
-    timer.start()
-    result = overlapping_lists(l0, l1)
-    timer.stop()
+    result = executor.run(functools.partial(overlapping_lists, l0, l1))
 
     if not (id(result) in common_nodes or (not common_nodes and not result)):
-        raise TestFailureException('Invalid result')
+        raise TestFailure('Invalid result')
 
-
-from test_framework import test_utils_generic_main, test_utils
 
 if __name__ == '__main__':
-    test_utils_generic_main.generic_test_main('do_lists_overlap.tsv',
-                                              overlapping_lists_wrapper)
+    exit(
+        generic_test.generic_test_main("do_lists_overlap.py",
+                                       'do_lists_overlap.tsv',
+                                       overlapping_lists_wrapper))
